@@ -1,0 +1,13 @@
+Implement your solution in the file sheet09.cpp in the src directory.
+The necessary OpenCV header files are already included.
+
+You can use the provided functions for reading the flow ground truth
+and converting the optical flow field into an image.
+
+Your program should run from the terminal with the following command:
+
+./src/bin/sheet09
+
+Please provide any other information required to run your program here...
+
+Your group members: ...

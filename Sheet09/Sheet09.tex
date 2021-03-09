@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage[a4paper,top=1.2in, bottom=1.2in, left=1.2in, right=1.2in]{geometry}
+\usepackage{ifthen}
+
+% no indent
+\setlength\parindent{0pt}
+
+% points
+\newcommand{\points}[1]{
+    \ifthenelse{\equal{#1}{1}}
+        {\\ \emph{(#1 Point)}}
+    % else
+        {\\ \emph{(#1 Points)}}
+}
+
+\begin{document}
+
+\begin{center}
+\textbf{Exercise 9 for MA-INF 2201 Computer Vision WS17/18\\
+18.12.2017\\
+Submission on 07.01.2018\\
+Optical Flow}\\
+\end{center}
+
+\vspace{1cm}
+
+\begin{enumerate}
+    % exercise 1
+    \item \textbf{Lucas-Kanade Flow}:
+
+        You can find two consecutive frames and the optical flow ground truth in the \texttt{data} directory. We provide two functions that may help you solving the following tasks.
+        The function \texttt{read\_FLO\_file} can be used to read the FLO-file containing the ground truth. To convert the optical flow to an RGB image, you can use the function \texttt{flow\_to\_RGB}.
+        \begin{enumerate}
+            \item Implement your own version of the Lucas-Kanade optical flow as presented in the lecture. Use a $ 15 \times 15 $ window in the algorithm. Display the ground truth and your estimated flow.
+            \points{9}
+            \item Report the average angular error of your estimated flow.
+            \points{1}
+        \end{enumerate}
+    \item \textbf{Horn-Schunck Flow}:
+
+    Implement your own version of the Horn-Schunck optical flow using an iterative optimization based on the Jacobi method as originally proposed by Horn and Schunck\footnote{B.K.P. Horn and B.G. Schunck, \textit{Determining optical flow}. Artificial Intelligence, vol. 17, pp. 185 -- 203, 1981}.
+    The iterative update rule is defined by
+    \begin{align}
+        u^{(k+1)} &= \bar u^{(k)} - \frac{I_x(I_x \bar u^{(k)} + I_y \bar v^{(k)} + I_t)}{\alpha^2 + I_x^2 + I_y^2}, \\
+        v^{(k+1)} &= \bar v^{(k)} - \frac{I_y(I_x \bar u^{(k)} + I_y \bar v^{(k)} + I_t)}{\alpha^2 + I_x^2 + I_y^2},
+    \end{align}
+    where
+    \begin{align}
+        \bar u^{(k)} = u^{(k)} + \Delta u^{(k)} \quad \text{and} \quad
+        \bar v^{(k)} = v^{(k)} + \Delta v^{(k)}.
+    \end{align}
+    You can approximate the laplacian $ \Delta u^{(k)} $ and $ \Delta v^{(k)} $ using the normalized laplacian kernel
+    \begin{align}
+        K = \begin{pmatrix} 0 & \frac{1}{4} & 0 \\ \frac{1}{4} & -1 & \frac{1}{4} \\ 0 & \frac{1}{4} & 0 \end{pmatrix}.
+    \end{align}
+
+    Use your implementation to estimate the optical flow on the two given frames. Set $ \alpha = 1 $ and initialize
+    $ u^{(0)} $ and $ v^{(0)} $ with zero. Iterate until the difference of two flow fields in $ L_1 $ norm is less than
+    $ 0.002 $, i.e.\ until
+    \begin{align}
+        \sum_{i,j} |u^{(k+1)}_{i,j} - u^{(k)}_{i,j}| + |v^{(k+1)}_{i,j} - v^{(k)}_{i,j}| < 0.002.
+    \end{align}
+    Report the average angular error and display the estimated flow.
+    \points{10}
+\end{enumerate}
+
+\end{document}
